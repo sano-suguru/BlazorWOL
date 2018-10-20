@@ -20,4 +20,9 @@
     };
     initialized = true;
   }
+
+  async Task OnClickOk(Device edited) {
+    await DevicesService.UpdateDeviceAsync(edited.Id, edited);
+    UriHelper.NavigateTo("/");
+  }
 }

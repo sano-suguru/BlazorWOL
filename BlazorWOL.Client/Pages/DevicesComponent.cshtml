@@ -18,4 +18,6 @@
 
   protected override async Task OnInitAsync() =>
     Devices = await DevicesService.GetDeviceAsync();
+
+  Device NewDevice = new Device();
 }

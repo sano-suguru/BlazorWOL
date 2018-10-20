@@ -16,6 +16,6 @@
 @functions {
   IEnumerable<Device> Devices;
 
-  protected override void OnInit() =>
-    Devices = DevicesService.GetDevices();
+  protected override async Task OnInitAsync() =>
+    Devices = await DevicesService.GetDeviceAsync();
 }

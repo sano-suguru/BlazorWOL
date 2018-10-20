@@ -1,5 +1,6 @@
 ﻿using BlazorWOL.Shared;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
   public class DevicesService {
@@ -18,6 +19,7 @@ namespace BlazorWOL.Client {
       },
     };
 
-    public IEnumerable<Device> GetDevices() => Devices;
+    public async Task<IEnumerable<Device>> GetDeviceAsync() =>
+      await Task.FromResult(Devices);
   }
 }

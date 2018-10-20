@@ -14,28 +14,6 @@
     </div>
   </div>
 }
-
-<div class="device">
-  <div class="name">
-    <span class="caption">Device Name</span>
-    <span class="input-field">
-      <input type="text" name="name" bind="@NewDevice.Name" />
-    </span>
-  </div>
-  <div class="mac-address">
-    <span class="caption">MAC Address</span>
-    <span class="input-field">
-      <input type="text" name="name" bind="@NewDevice.MACAddress" />
-    </span>
-  </div>
-  <div class="error-message">
-    @ErrorMessage
-  </div>
-  <div class="actions">
-    <a class="button" onclick="@OnOk">OK</a>
-  </div>
-</div>
-
 <div>
   <a class="button" href="/addnew">Add Device</a>
 </div>
@@ -45,34 +23,4 @@
 
   protected override async Task OnInitAsync() =>
     Devices = await DevicesService.GetDeviceAsync();
-
-  Device NewDevice = new Device();
-
-  async Task OnOk() {
-    if (string.IsNullOrWhiteSpace(NewDevice.Name)) {
-      ErrorMessage = "Please enter device name.";
-    } else if (string.IsNullOrWhiteSpace(NewDevice.MACAddress)) {
-      ErrorMessage = "Please enter MAC address.";
-    } else if (!isValidMACAddress(NewDevice.MACAddress)) {
-      ErrorMessage = "MAC address format is incorrect.";
-    } else {
-      ErrorMessage = "";
-    }
-    if (ErrorMessage != "") {
-      return;
-    }
-
-    NewDevice.MACAddress = NewDevice.MACAddress.Replace("-", ":").ToUpper();
-
-    await DevicesService.AddDeviceAsync(NewDevice);
-    NewDevice = new Device();
-  }
-
-  bool isValidMACAddress(string MACAddress) =>
-    Regex.IsMatch(
-      NewDevice.MACAddress,
-      @"^[\da-f]{2}((:|-)[\da-f]{2}){5}$",
-      RegexOptions.IgnoreCase);
-
-  string ErrorMessage = "";
 }

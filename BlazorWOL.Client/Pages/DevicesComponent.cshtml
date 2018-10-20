@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject DevicesService DevicesService
+@inject DeviceService DeviceService
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 
 @foreach (var device in Devices) {
@@ -27,7 +27,7 @@
   IEnumerable<Device> Devices = Enumerable.Empty<Device>();
 
   protected override async Task OnInitAsync() =>
-    Devices = await DevicesService.GetDevicesAsync();
+    Devices = await DeviceService.GetDevicesAsync();
 
   void OnClickEdit(Device device) {
     UriHelper.NavigateTo($"/edit/{device.Id}");

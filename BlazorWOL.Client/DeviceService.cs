@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
-  public class DevicesService {
+  public class DeviceService {
     List<Device> Devices { get; } = new List<Device> {
       new Device {
         Name = "Odin",

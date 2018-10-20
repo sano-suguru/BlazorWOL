@@ -1,1 +1,7 @@
-﻿
+﻿@page "/edit/{DeviceId:guid}"
+<p>Device Guid is @DeviceId</p>
+
+@functions {
+  [Parameter]
+  Guid DeviceId { get; set; }
+}

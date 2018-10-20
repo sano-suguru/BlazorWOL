@@ -1,12 +1,12 @@
 ﻿@page "/addnew"
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
-@inject DevicesService DevicesService
+@inject DeviceService DeviceService
 
 <DeviceForm Item="@(new Device())" OnClickOk="@OnClickOk" />
 
 @functions {
   async Task OnClickOk(Device device) {
-    await DevicesService.AddDeviceAsync(device);
+    await DeviceService.AddDeviceAsync(device);
     UriHelper.NavigateTo("/");
   }
 }

@@ -1,9 +1,11 @@
 ﻿using BlazorWOL.Shared;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
-  public class DevicesService {
+  public class DeviceService {
     List<Device> Devices { get; } = new List<Device> {
       new Device {
         Name = "Odin",
@@ -19,10 +21,20 @@ namespace BlazorWOL.Client {
       },
     };
 
-    public async Task<IEnumerable<Device>> GetDeviceAsync() =>
+    public async Task<IEnumerable<Device>> GetDevicesAsync() =>
       await Task.FromResult(Devices);
 
     public async Task AddDeviceAsync(Device device) =>
       await Task.Run(() => Devices.Add(device));
+
+    public async Task<Device> GetDeviceAsync(Guid id) =>
+      await Task.Run(() => Devices.FirstOrDefault(d => d.Id == id));
+
+    public async Task UpdateDeviceAsync(Guid id, Device device) =>
+      await Task.Run(() => {
+        var target = Devices.FirstOrDefault(d => d.Id == id);
+        target.Name = device.Name;
+        target.MACAddress = device.MACAddress;
+      });
   }
 }

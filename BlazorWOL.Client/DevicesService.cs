@@ -29,5 +29,12 @@ namespace BlazorWOL.Client {
 
     public async Task<Device> GetDeviceAsync(Guid id) =>
       await Task.Run(() => Devices.FirstOrDefault(d => d.Id == id));
+
+    public async Task UpdateDeviceAsync(Guid id, Device device) =>
+      await Task.Run(() => {
+        var target = Devices.FirstOrDefault(d => d.Id == id);
+        target.Name = device.Name;
+        target.MACAddress = device.MACAddress;
+      });
   }
 }

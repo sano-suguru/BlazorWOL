@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
   public class DevicesService {
-    List<Device> Devices => new List<Device> {
+    List<Device> Devices { get; } = new List<Device> {
       new Device {
         Name = "Odin",
         MACAddress = "00:15:5D:52:CA:B6"

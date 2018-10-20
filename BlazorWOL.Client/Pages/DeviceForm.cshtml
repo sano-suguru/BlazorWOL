@@ -48,7 +48,6 @@
     Item.MACAddress = Item.MACAddress.Replace("-", ":").ToUpper();
 
     await OnClickOk?.Invoke(Item);
-    // Item = new Device();
   }
 
   bool isValidMACAddress(string MACAddress) =>

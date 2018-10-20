@@ -20,4 +20,9 @@
     Devices = await DevicesService.GetDeviceAsync();
 
   Device NewDevice = new Device();
+
+  async Task OnOk() {
+    await DevicesService.AddDeviceAsync(NewDevice);
+    NewDevice = new Device();
+  }
 }

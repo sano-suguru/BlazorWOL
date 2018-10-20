@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace BlazorWOL.Client {
   public class Startup {
     public void ConfigureServices(IServiceCollection services) {
+      services.AddSingleton<DevicesService>();
     }
 
     public void Configure(IBlazorApplicationBuilder app) {

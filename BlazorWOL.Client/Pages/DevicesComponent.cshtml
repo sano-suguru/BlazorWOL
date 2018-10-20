@@ -1,4 +1,5 @@
-﻿@inject DevicesService DevicesService
+﻿@using System.Text.RegularExpressions
+@inject DevicesService DevicesService
 
 @foreach (var device in Devices) {
   <div class="device">
@@ -26,6 +27,9 @@
       <input type="text" name="name" bind="@NewDevice.MACAddress" />
     </span>
   </div>
+  <div class="error-message">
+    @ErrorMessage
+  </div>
   <div class="actions">
     <a class="button" onclick="@OnOk">OK</a>
   </div>
@@ -40,7 +44,30 @@
   Device NewDevice = new Device();
 
   async Task OnOk() {
+    if (string.IsNullOrWhiteSpace(NewDevice.Name)) {
+      ErrorMessage = "Please enter device name.";
+    } else if (string.IsNullOrWhiteSpace(NewDevice.MACAddress)) {
+      ErrorMessage = "Please enter MAC address.";
+    } else if (!isValidMACAddress(NewDevice.MACAddress)) {
+      ErrorMessage = "MAC address format is incorrect.";
+    } else {
+      ErrorMessage = "";
+    }
+    if (ErrorMessage != "") {
+      return;
+    }
+
+    NewDevice.MACAddress = NewDevice.MACAddress.Replace("-", ":").ToUpper();
+
     await DevicesService.AddDeviceAsync(NewDevice);
     NewDevice = new Device();
   }
+
+  bool isValidMACAddress(string MACAddress) =>
+    Regex.IsMatch(
+      NewDevice.MACAddress,
+      @"^[\da-f]{2}((:|-)[\da-f]{2}){5}$",
+      RegexOptions.IgnoreCase);
+
+  string ErrorMessage = "";
 }

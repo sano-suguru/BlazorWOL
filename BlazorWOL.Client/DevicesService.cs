@@ -21,7 +21,7 @@ namespace BlazorWOL.Client {
       },
     };
 
-    public async Task<IEnumerable<Device>> GetDeviceAsync() =>
+    public async Task<IEnumerable<Device>> GetDevicesAsync() =>
       await Task.FromResult(Devices);
 
     public async Task AddDeviceAsync(Device device) =>

@@ -27,7 +27,7 @@
   IEnumerable<Device> Devices = Enumerable.Empty<Device>();
 
   protected override async Task OnInitAsync() =>
-    Devices = await DevicesService.GetDeviceAsync();
+    Devices = await DevicesService.GetDevicesAsync();
 
   void OnClickEdit(Device device) {
     UriHelper.NavigateTo($"/edit/{device.Id}");

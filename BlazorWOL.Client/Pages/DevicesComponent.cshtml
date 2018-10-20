@@ -53,6 +53,9 @@
     if (ErrorMessage != "") {
       return;
     }
+
+    NewDevice.MACAddress = NewDevice.MACAddress.Replace("-", ":").ToUpper();
+
     await DevicesService.AddDeviceAsync(NewDevice);
     NewDevice = new Device();
   }

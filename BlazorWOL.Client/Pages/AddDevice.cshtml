@@ -1,5 +1,6 @@
 ﻿@page "/addnew"
 @using System.Text.RegularExpressions
+@inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 @inject DevicesService DevicesService
 
 <div class="device">
@@ -46,6 +47,8 @@
 
     await DevicesService.AddDeviceAsync(NewDevice);
     NewDevice = new Device();
+
+    UriHelper.NavigateTo("/");
   }
 
   bool isValidMACAddress(string MACAddress) =>

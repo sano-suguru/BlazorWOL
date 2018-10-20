@@ -1,5 +1,7 @@
 ﻿using BlazorWOL.Shared;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
@@ -24,5 +26,8 @@ namespace BlazorWOL.Client {
 
     public async Task AddDeviceAsync(Device device) =>
       await Task.Run(() => Devices.Add(device));
+
+    public async Task<Device> GetDeviceAsync(Guid id) =>
+      await Task.Run(() => Devices.FirstOrDefault(d => d.Id == id));
   }
 }

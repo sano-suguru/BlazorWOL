@@ -3,6 +3,13 @@
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 
 <p>Device Guid is @DeviceId</p>
+@if (initialized) {
+  @if (Item is null) {
+    <p class="error-message">No device information found</p>
+  } else {
+    <DeviceForm Item="@Item" OnClickOk="@OnClickOk" />
+  }
+}
 
 @functions {
   [Parameter]

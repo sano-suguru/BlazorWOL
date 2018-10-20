@@ -1,60 +1,12 @@
 ﻿@page "/addnew"
-@using System.Text.RegularExpressions
 @inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
 @inject DevicesService DevicesService
 
-<div class="device">
-  <div class="name">
-    <span class="caption">Device Name</span>
-    <span class="input-field">
-      <input type="text" name="name" bind="@NewDevice.Name" />
-    </span>
-  </div>
-  <div class="mac-address">
-    <span class="caption">MAC Address</span>
-    <span class="input-field">
-      <input type="text" name="name" bind="@NewDevice.MACAddress" />
-    </span>
-  </div>
-  <div class="error-message">
-    @ErrorMessage
-  </div>
-  <div class="actions">
-    <a class="button" onclick="@OnOk">OK</a>
-    <a class="button" href="/">Cancel</a>
-  </div>
-</div>
+<DeviceForm Item="@(new Device())" OnClickOk="@OnClickOk" />
 
 @functions {
-  Device NewDevice = new Device();
-
-  string ErrorMessage = "";
-
-  async Task OnOk() {
-    if (string.IsNullOrWhiteSpace(NewDevice.Name)) {
-      ErrorMessage = "Please enter device name.";
-    } else if (string.IsNullOrWhiteSpace(NewDevice.MACAddress)) {
-      ErrorMessage = "Please enter MAC address.";
-    } else if (!isValidMACAddress(NewDevice.MACAddress)) {
-      ErrorMessage = "MAC address format is incorrect.";
-    } else {
-      ErrorMessage = "";
-    }
-    if (ErrorMessage != "") {
-      return;
-    }
-
-    NewDevice.MACAddress = NewDevice.MACAddress.Replace("-", ":").ToUpper();
-
-    await DevicesService.AddDeviceAsync(NewDevice);
-    NewDevice = new Device();
-
+  async Task OnClickOk(Device device) {
+    await DevicesService.AddDeviceAsync(device);
     UriHelper.NavigateTo("/");
   }
-
-  bool isValidMACAddress(string MACAddress) =>
-    Regex.IsMatch(
-      NewDevice.MACAddress,
-      @"^[\da-f]{2}((:|-)[\da-f]{2}){5}$",
-      RegexOptions.IgnoreCase);
 }

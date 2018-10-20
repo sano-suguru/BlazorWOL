@@ -29,7 +29,7 @@
   }
 
   async Task OnClickOk(Device edited) {
-    await DevicesService.UpdateDeviceAsync(edited.Id, edited);
+    await DevicesService.UpdateDeviceAsync(DeviceId, edited);
     UriHelper.NavigateTo("/");
   }
 }

@@ -1,7 +1,23 @@
 ﻿@page "/edit/{DeviceId:guid}"
+@inject DevicesService DevicesService
+@inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
+
 <p>Device Guid is @DeviceId</p>
 
 @functions {
   [Parameter]
   Guid DeviceId { get; set; }
+
+  bool initialized = false;
+
+  Device Item;
+
+  protected override async Task OnInitAsync() {
+    var device = await DevicesService.GetDeviceAsync(DeviceId);
+    Item = new Device {
+      Name = device.Name,
+      MACAddress = device.MACAddress
+    };
+    initialized = true;
+  }
 }

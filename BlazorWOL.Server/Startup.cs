@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.InteropServices;
 
 namespace BlazorWOL.Server {
   public class Startup {
@@ -18,6 +21,18 @@ namespace BlazorWOL.Server {
           MediaTypeNames.Application.Octet,
           WasmMediaTypeNames.Application.Wasm,
         });
+      });
+
+      services.AddSingleton(serviceProvider => {
+        var basedir = Path.Combine($"{Path.DirectorySeparatorChar}", "etc", "blazorWOL");
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+          basedir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "BlzorWOL");
+        }
+        if (!Directory.Exists(basedir)) {
+          Directory.CreateDirectory(basedir);
+        }
+        var storagePath = Path.Combine(basedir, "devices.json");
+        return new DeviceStorage(storagePath);
       });
     }
 

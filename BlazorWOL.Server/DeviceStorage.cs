@@ -33,7 +33,7 @@ namespace BlazorWOL.Server {
       }
     }
 
-    private Device GetDevice(Guid id) {
+    public Device GetDevice(Guid id) {
       lock (__lockStorage) {
         return Devices.Find(device => device.Id == id);
       }

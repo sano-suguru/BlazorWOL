@@ -30,6 +30,10 @@ namespace BlazorWOL.Server.Controllers {
       return Ok(device);
     }
 
-
+    [HttpPut, Route("{guid}")]
+    public IActionResult UpdateDevice(Guid guid, [FromBody]Device device) {
+      Storage.UpdateDevice(guid, device);
+      return Ok();
+    }
   }
 }

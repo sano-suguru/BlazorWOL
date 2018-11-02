@@ -20,7 +20,7 @@ namespace BlazorWOL.Server.Controllers {
     [HttpGet, Route("{guid}")]
     public IActionResult GetDevice(Guid id) {
       var device = Storage.GetDevice(id);
-      if (device == null) { return NotFound(); }
+      if (device is null) { return NotFound(); }
       return Ok(device);
     }
 

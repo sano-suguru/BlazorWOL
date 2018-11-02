@@ -23,5 +23,13 @@ namespace BlazorWOL.Server.Controllers {
       if (device == null) { return NotFound(); }
       return Ok(device);
     }
+
+    [HttpPost]
+    public IActionResult AddDevice([FromBody] Device device) {
+      Storage.AddDevice(device);
+      return Ok(device);
+    }
+
+
   }
 }

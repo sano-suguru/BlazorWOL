@@ -35,5 +35,12 @@ namespace BlazorWOL.Server.Controllers {
       Storage.UpdateDevice(guid, device);
       return Ok();
     }
+
+    [HttpDelete, Route("{guid}")]
+    public IActionResult DeleteDevice(Guid id) {
+      var deleted = Storage.DeleteDevice(id);
+      if (deleted is null) { return NotFound(); }
+      return Ok();
+    }
   }
 }

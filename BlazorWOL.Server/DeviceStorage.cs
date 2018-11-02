@@ -9,6 +9,8 @@ namespace BlazorWOL.Server {
     string StoragePath { get; }
     List<Device> Devices { get; } = new List<Device>();
 
+    readonly object __lockStorage = new object();
+
     public DeviceStorage(string storagePath) {
       StoragePath = storagePath;
       if (File.Exists(StoragePath)) {
@@ -19,26 +21,26 @@ namespace BlazorWOL.Server {
     }
 
     public List<Device> GetDevices() {
-      lock (this) {
+      lock (__lockStorage) {
         return Devices;
       }
     }
 
     public void AddDevice(Device device) {
-      lock (this) {
+      lock (__lockStorage) {
         this.Devices.Add(device);
         FlushToStorage();
       }
     }
 
     private Device GetDevice(Guid id) {
-      lock (this) {
+      lock (__lockStorage) {
         return Devices.Find(device => device.Id == id);
       }
     }
 
     public void UpdateDevice(Guid id, Device device) {
-      lock (this) {
+      lock (__lockStorage) {
         Device updateTo = GetDevice(id);
         updateTo.Name = device.Name;
         updateTo.MACAddress = device.MACAddress;
@@ -47,7 +49,7 @@ namespace BlazorWOL.Server {
     }
 
     public Device DeleteDevice(Guid id) {
-      lock (this) {
+      lock (__lockStorage) {
         Device deleteTo = GetDevice(id);
         if (deleteTo != null) {
           Devices.Remove(deleteTo);
@@ -58,7 +60,7 @@ namespace BlazorWOL.Server {
     }
 
     private void FlushToStorage() {
-      lock (this) {
+      lock (__lockStorage) {
         var json = JsonConvert.SerializeObject(Devices);
         File.WriteAllText(StoragePath, json);
       }

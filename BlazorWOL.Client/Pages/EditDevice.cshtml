@@ -7,7 +7,7 @@
   @if (Item is null) {
     <p class="error-message">No device information found</p>
   } else {
-    <DeviceForm Item="@Item" OnClickOk="@OnClickOk" />
+    <DeviceForm Item="@Item" OnClickOk="@OnClickOk" OnClickDelete="@OnClickDelete" />
   }
 }
 
@@ -30,6 +30,11 @@
 
   async Task OnClickOk(Device edited) {
     await DeviceService.UpdateDeviceAsync(DeviceId, edited);
+    UriHelper.NavigateTo("/");
+  }
+
+  async Task OnClickDelete() {
+    await DeviceService.DeleteDeviceAsync(DeviceId);
     UriHelper.NavigateTo("/");
   }
 }

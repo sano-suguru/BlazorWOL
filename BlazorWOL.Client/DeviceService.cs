@@ -1,40 +1,36 @@
 ﻿using BlazorWOL.Shared;
+using Microsoft.AspNetCore.Blazor;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BlazorWOL.Client {
   public class DeviceService {
-    List<Device> Devices { get; } = new List<Device> {
-      new Device {
-        Name = "Odin",
-        MACAddress = "00:15:5D:52:CA:B6"
-      },
-      new Device {
-        Name = "Thor",
-        MACAddress = "00:0C:29:30:7D:5D"
-      },
-      new Device {
-        Name = "Fenrir",
-        MACAddress = "00:50:56:01:43:86"
-      },
-    };
+    readonly HttpClient httpClient;
+
+    public DeviceService(HttpClient httpClient) {
+      this.httpClient = httpClient;
+    }
 
     public async Task<IEnumerable<Device>> GetDevicesAsync() =>
-      await Task.FromResult(Devices);
+      await httpClient.GetJsonAsync<Device[]>("api/devices");
 
     public async Task AddDeviceAsync(Device device) =>
-      await Task.Run(() => Devices.Add(device));
+      await httpClient.PostJsonAsync("api/devices", device);
 
-    public async Task<Device> GetDeviceAsync(Guid id) =>
-      await Task.Run(() => Devices.FirstOrDefault(d => d.Id == id));
+    public async Task<Device> GetDeviceAsync(Guid id) {
+      try {
+        return await httpClient.GetJsonAsync<Device>($"api/devices/{id}");
+      } catch (HttpRequestException e) when (e.Message == "404 (Not Found)") {
+        return null;
+      }
+    }
 
     public async Task UpdateDeviceAsync(Guid id, Device device) =>
-      await Task.Run(() => {
-        var target = Devices.FirstOrDefault(d => d.Id == id);
-        target.Name = device.Name;
-        target.MACAddress = device.MACAddress;
-      });
+      await httpClient.PutJsonAsync($"api/devices/{id}", device);
+
+    public async Task DeleteDeviceAsync(Guid id) =>
+      await httpClient.DeleteAsync($"api/devices/{id}");
   }
 }

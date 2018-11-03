@@ -17,7 +17,7 @@ namespace BlazorWOL.Server.Controllers {
     public IEnumerable<Device> GetDevices() =>
       Storage.GetDevices();
 
-    [HttpGet, Route("{guid}")]
+    [HttpGet, Route("{id}")]
     public IActionResult GetDevice(Guid id) {
       var device = Storage.GetDevice(id);
       if (device is null) { return NotFound(); }
@@ -30,13 +30,13 @@ namespace BlazorWOL.Server.Controllers {
       return Ok(device);
     }
 
-    [HttpPut, Route("{guid}")]
-    public IActionResult UpdateDevice(Guid guid, [FromBody]Device device) {
-      Storage.UpdateDevice(guid, device);
+    [HttpPut, Route("{id}")]
+    public IActionResult UpdateDevice(Guid id, [FromBody]Device device) {
+      Storage.UpdateDevice(id, device);
       return Ok();
     }
 
-    [HttpDelete, Route("{guid}")]
+    [HttpDelete, Route("{id}")]
     public IActionResult DeleteDevice(Guid id) {
       var deleted = Storage.DeleteDevice(id);
       if (deleted is null) { return NotFound(); }

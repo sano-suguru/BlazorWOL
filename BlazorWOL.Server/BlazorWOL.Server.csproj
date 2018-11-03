@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="WakeOnLanClient" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

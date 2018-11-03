@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
 
 namespace BlazorWOL.Server.Controllers {
   [Route("api/[controller]")]
@@ -40,6 +43,17 @@ namespace BlazorWOL.Server.Controllers {
     public IActionResult DeleteDevice(Guid id) {
       var deleted = Storage.DeleteDevice(id);
       if (deleted is null) { return NotFound(); }
+      return Ok();
+    }
+
+    [HttpPost, Route("{id}/wakeup")]
+    public IActionResult WakeupDevice(Guid id) {
+      var device = Storage.GetDevice(id);
+      var macAddressBytes = device.MACAddress
+        .Split(':')
+        .Select(x => byte.Parse(x, NumberStyles.HexNumber))
+        .ToArray();
+      IPAddress.Broadcast.SendWol(macAddressBytes);
       return Ok();
     }
   }
